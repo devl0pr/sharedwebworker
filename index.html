@@ -83,61 +83,10 @@
         }
     });
 
-    function writeUserData(userId, name, email, message) {
-        set(ref(db, 'users/' + userId), {
-            username: name,
-            email: email,
-            message: message
-        });
-    }
-
     // Send a disconnect message when the tab is closed or refreshed
     window.addEventListener('beforeunload', () => {
         myWorker.port.postMessage({ type: 'disconnect', key: tabKey });
     });
-
-</script>
-
-
-<script>
-
-    // const myWorker = new SharedWorker("worker4.js");
-    // const form = document.getElementById('form');
-    // const input = document.getElementById('input');
-    // const messages = document.getElementById('messages');
-    // const tabKey = Date.now().toString();
-    //
-    // // myWorker.port.start();
-    // myWorker.port.postMessage({ type: 'connect', key: tabKey });
-    //
-    // myWorker.port.onmessage = (e) => {
-    //
-    //     if ( e.data.type !== undefined && e.data.type === 'connect' )
-    //     {
-    //         console.log(e.data.connectedTabCount);
-    //         return;
-    //     }
-    //
-    //     const item = document.createElement('li');
-    //     item.textContent = e.data.message;
-    //     messages.appendChild(item);
-    //     window.scrollTo(0, document.body.scrollHeight);
-    //     input.value = '';
-    //     console.log("Message received from worker");
-    // };
-    //
-    // form.addEventListener('submit', (e) => {
-    //     e.preventDefault();
-    //     if (input.value) {
-    //         myWorker.port.postMessage({ type: 'message', key: tabKey, message: input.value });
-    //         console.log("Message posted to worker YAY!");
-    //     }
-    // });
-    //
-    // // Send a disconnect message when the tab is closed or refreshed
-    // window.addEventListener('beforeunload', () => {
-    //     myWorker.port.postMessage({ type: 'disconnect', key: tabKey });
-    // });
 
 </script>
 </body>

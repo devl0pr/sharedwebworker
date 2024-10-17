@@ -87,7 +87,6 @@ onconnect = (e) => {
     };
 };
 
-
 function getConnectedTabCount(portsByKey) {
     let i = 0;
 

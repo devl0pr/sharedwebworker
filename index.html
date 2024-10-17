@@ -22,18 +22,32 @@
     <input id="input" autocomplete="off" /><button>Send</button>
 </form>
 
-<script>
-
+<script type="module">
     const myWorker = new SharedWorker("worker4.js");
+    const tabKey = Date.now().toString();
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyAJ1akReazTxDY-YxoyJfYNYKZgBkIhUyc",
+        authDomain: "wetest-67a44.firebaseapp.com",
+        databaseURL: "https://wetest-67a44-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "wetest-67a44",
+        storageBucket: "wetest-67a44.appspot.com",
+        messagingSenderId: "929853417802",
+        appId: "1:929853417802:web:c14d356f9fd6e75265f9b3"
+    };
+
+    const token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCIsImlhdCI6MTcyOTE4NzEyNiwiZXhwIjoxNzI5MTkwNzI2LCJpc3MiOiJmaXJlYmFzZS1hZG1pbnNkay1zcHN3c0B3ZXRlc3QtNjdhNDQuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJzdWIiOiJmaXJlYmFzZS1hZG1pbnNkay1zcHN3c0B3ZXRlc3QtNjdhNDQuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJ1aWQiOiJjaDA5In0.3qUNsZEs4Clj6yZIOWkUpb3EUQfE2FQyX8_RztO0hoEds4uzI4NiHsjsIpnwklg71JkhNBnNEUw4Ac5EyC0BLrIVKmBGzPPc_MuNzAAn51Y8ZJVimG0VzvG5YMoepa3cqxI7Hq6ZTvJnPKYjcsmIz-yrbBVXOiF1DFc6mCAA17_j5S8Fl4mVBXjR067n2s2Lq5llEwX-HFcRmc-YvbbVyNMo7Kun-naCTMplhcB6sQYYn9LQU2Oj13yxEWGj5WUZM201JyBw_YuUcRSoIIjtOtkn8ro9QCHcSRKXMPonhNHBQlHz6BWXuPn8q2KEKlosdjMP2uP44JBzxgBLmEyTIA';
+
+    myWorker.port.postMessage({ type: 'connect', key: tabKey, config: firebaseConfig, authToken: token });
+
     const form = document.getElementById('form');
     const input = document.getElementById('input');
     const messages = document.getElementById('messages');
-    const tabKey = Date.now().toString();
-
-    // myWorker.port.start();
-    myWorker.port.postMessage({ type: 'connect', key: tabKey });
 
     myWorker.port.onmessage = (e) => {
+
+        if ( !e.data.message ) return;
 
         if ( e.data.type !== undefined && e.data.type === 'connect' )
         {
@@ -42,7 +56,7 @@
         }
 
         const item = document.createElement('li');
-        item.textContent = e.data.message;
+        item.textContent = JSON.stringify(e.data.message);
         messages.appendChild(item);
         window.scrollTo(0, document.body.scrollHeight);
         input.value = '';
@@ -52,15 +66,78 @@
     form.addEventListener('submit', (e) => {
         e.preventDefault();
         if (input.value) {
-            myWorker.port.postMessage({ type: 'message', key: tabKey, message: input.value });
-            console.log("Message posted to worker YAY!");
+            myWorker.port.postMessage({ type: 'updateRef', key: tabKey, params: {
+                    'email': 'test@we.io',
+                    'message': input.value,
+                    'status': 'online',
+                    'ip': '127.0.0.1',
+                    'name': 'Cavid',
+                    'lastOnlines': '1 hour ago',
+                    'theme': 'dark',
+                    'url': 'http://localhost'
+                }
+            });
+
+            input.value = '';
+            console.log("Message posted to Worker");
         }
     });
+
+    function writeUserData(userId, name, email, message) {
+        set(ref(db, 'users/' + userId), {
+            username: name,
+            email: email,
+            message: message
+        });
+    }
 
     // Send a disconnect message when the tab is closed or refreshed
     window.addEventListener('beforeunload', () => {
         myWorker.port.postMessage({ type: 'disconnect', key: tabKey });
     });
+
+</script>
+
+
+<script>
+
+    // const myWorker = new SharedWorker("worker4.js");
+    // const form = document.getElementById('form');
+    // const input = document.getElementById('input');
+    // const messages = document.getElementById('messages');
+    // const tabKey = Date.now().toString();
+    //
+    // // myWorker.port.start();
+    // myWorker.port.postMessage({ type: 'connect', key: tabKey });
+    //
+    // myWorker.port.onmessage = (e) => {
+    //
+    //     if ( e.data.type !== undefined && e.data.type === 'connect' )
+    //     {
+    //         console.log(e.data.connectedTabCount);
+    //         return;
+    //     }
+    //
+    //     const item = document.createElement('li');
+    //     item.textContent = e.data.message;
+    //     messages.appendChild(item);
+    //     window.scrollTo(0, document.body.scrollHeight);
+    //     input.value = '';
+    //     console.log("Message received from worker");
+    // };
+    //
+    // form.addEventListener('submit', (e) => {
+    //     e.preventDefault();
+    //     if (input.value) {
+    //         myWorker.port.postMessage({ type: 'message', key: tabKey, message: input.value });
+    //         console.log("Message posted to worker YAY!");
+    //     }
+    // });
+    //
+    // // Send a disconnect message when the tab is closed or refreshed
+    // window.addEventListener('beforeunload', () => {
+    //     myWorker.port.postMessage({ type: 'disconnect', key: tabKey });
+    // });
 
 </script>
 </body>

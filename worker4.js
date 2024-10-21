@@ -23,7 +23,6 @@ onconnect = (e) => {
                 console.log('initialize firebase...');
                 // Initialize Firebase
                 firebase.initializeApp(config);
-
                 firebase.auth().signInWithCustomToken(authToken)
                     .then((userCredential) => {
                         // Signed in

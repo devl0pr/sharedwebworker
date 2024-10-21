@@ -39,7 +39,7 @@
                 messagingSenderId: "929853417802",
                 appId: "1:929853417802:web:c14d356f9fd6e75265f9b3"
             };
-            const token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCIsImlhdCI6MTcyOTU0MDg0NSwiZXhwIjoxNzI5NTQ0NDQ1LCJpc3MiOiJmaXJlYmFzZS1hZG1pbnNkay1zcHN3c0B3ZXRlc3QtNjdhNDQuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJzdWIiOiJmaXJlYmFzZS1hZG1pbnNkay1zcHN3c0B3ZXRlc3QtNjdhNDQuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJ1aWQiOiJjaDA5In0.awwUsP7eVNyW2F29biW99ldSrT09xSffhzjry4Tt7q_RHYUoZPjdQxwYoL6WQlX-AumlCGtf6wgxvVm34Uej30BuVAtkidoKm2jw1zhdyv3Q76eSmrfn74Q5FqO2rAmceWSvp_2ADhn1LCxf_5jSLcypZqBV4WTEAIuI8Bfzb1rwohEQPTYqSF0bPCzYgNn28PLH_vczvPerKsJSpSNmiRPKvaA6_vcqfXOfbsdCD9VWWE5lzOkZXwwsS-RByTz_2XJWqEtVQYrIAqgTqybiGwHgUDotCjmlhENXzEmN_3VaKVS6Yd-ollDGZsTswuH1oB3dCyWS6x7XGoe3bq_i2Q';
+            const token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCIsImlhdCI6MTcyOTU0NzU1MiwiZXhwIjoxNzI5NTUxMTUyLCJpc3MiOiJmaXJlYmFzZS1hZG1pbnNkay1zcHN3c0B3ZXRlc3QtNjdhNDQuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJzdWIiOiJmaXJlYmFzZS1hZG1pbnNkay1zcHN3c0B3ZXRlc3QtNjdhNDQuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJ1aWQiOiJjaDA5In0.A-hFztJi7HIJiErkbNH8YAQprDWCN8hApi3OlkIbcJXuxrxMC7nqPUreJNFMiLnmdlDLEg98kfYikreEbQq0akCTsOZxc3fh2SVD4LS-vWyruLT_0et_6s--LabcHzuuAy3RhwSyp1sWaHsBKK-N04kgK3RRkZs8xWEs5qcXfbIyFPweGelZq1EqE-XAyy2wdoUAMKDN7ySOSYBVlkgSMYlRLpd0ks72oiBmxvdfwaOAQDYf3mgYljAScf6vAJW4Gr_hC4F4i4Xb8k2suXrexb-MaWegN7ibOsblL3tb2dLoI33lYJT9ZHwb-phWSKKeE7sgiyQ3cS3VOaGg0sKkYw';
 
             // Check for new service worker version
             registration.onupdatefound = function () {
@@ -63,6 +63,7 @@
             navigator.serviceWorker.ready.then(function (registration) {
                 registration.active.postMessage({
                     type: 'connect',
+                    ref: 'users/2',
                     key: tabKey,
                     config: firebaseConfig,
                     authToken: token

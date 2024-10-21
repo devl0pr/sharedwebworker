@@ -6,6 +6,7 @@ let db = null;
 let usersRef = null;
 let init = false;
 
+
 // Initialize Firebase once when the service worker is installeddddddddddddd
 self.addEventListener('install', (event) => {
     console.log('Service worker installing...');
@@ -34,8 +35,9 @@ self.addEventListener('message', async (event) => {
                     db = firebase.database();
 
                     if ( db && !init ) {
+                        console.log(Date.now().toString());
                         init = true;
-
+                        console.log(ref)
                         usersRef = db.ref(ref);
                         usersRef.on('value', function(snap) {
                             broadcastMessage({ message: snap.val() });

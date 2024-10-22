@@ -7,7 +7,7 @@ let usersRef = null;
 let init = false;
 
 
-// Initialize Firebase once when the service worker is installeddddddddddddd
+// Initialize Firebase once when the service worker is installed
 self.addEventListener('install', (event) => {
     console.log('Service worker installing...');
     // Perform install steps
@@ -15,6 +15,8 @@ self.addEventListener('install', (event) => {
 
 self.addEventListener('activate', (event) => {
     console.log('Service worker activated...');
+    // Claim clients immediately after activation
+    event.waitUntil(self.clients.claim());
 });
 
 self.addEventListener('message', async (event) => {
@@ -72,6 +74,7 @@ self.addEventListener('message', async (event) => {
         }
 
     } else if (type === 'updateRef') {
+        console.log(usersRef)
         if (usersRef) {
             usersRef.update(params);
         }
@@ -81,6 +84,7 @@ self.addEventListener('message', async (event) => {
 // Function to broadcast messages to all clients
 async function broadcastMessage(message) {
     const clients = await self.clients.matchAll();
+
     console.log(clients, message);
     clients.forEach(client => {
         client.postMessage(message);

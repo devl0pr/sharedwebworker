@@ -26,7 +26,7 @@ self.addEventListener('message', async (event) => {
 
         if (!init) {
             console.log('Fetching token...');
-            const authToken = await getData();
+            const authToken = await getToken();
 
             console.log('Initializing Firebase...');
             firebase.initializeApp(config);
@@ -94,7 +94,7 @@ async function broadcastMessage(message) {
     });
 }
 
-async function getData() {
+async function getToken() {
     const url = "token.json";
     try {
         const response = await fetch(url);

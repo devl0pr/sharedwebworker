@@ -25,10 +25,13 @@ self.addEventListener('message', async (event) => {
     if (type === 'connect') {
 
         if (!init) {
+            console.log('Fetching token...');
+            const authToken = await getData();
+
             console.log('Initializing Firebase...');
             firebase.initializeApp(config);
 
-            firebase.auth().signInWithCustomToken(authToken)
+            firebase.auth().signInWithCustomToken(authToken.token)
                 .then((userCredential) => {
                     console.log('Signed in with Firebase');
                     // Signed in
@@ -89,4 +92,21 @@ async function broadcastMessage(message) {
     clients.forEach(client => {
         client.postMessage(message);
     });
+}
+
+async function getData() {
+    const url = "token.json";
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            return 'fail';
+        }
+
+        const json = await response.json();
+        console.log(json);
+        return json;
+    } catch (error) {
+        console.error(error.message);
+        return 'fail';
+    }
 }
